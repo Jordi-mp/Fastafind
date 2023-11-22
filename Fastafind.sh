@@ -71,5 +71,14 @@ elif [[ "$(wc -l < "$i")" -eq 0 ]];
 else head -n "$Lines" "$i"
  echo "..." 
 tail -n "$Lines" "$i" 
+echo " "
+echo " "
+echo Report of $i finished.
+echo " "
+echo "........................................................................."
+echo " "
 fi 
 done
+echo " "
+echo Report of all fasta files in $1 finished!
+echo " "
