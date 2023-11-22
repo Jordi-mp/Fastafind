@@ -10,7 +10,7 @@ echo "........................................................................."
 echo " "
 
 # 1. the folder X where to search files (default: current folder) 
-Folder="${1:-.}"  # ":-" is used as a default value operator 
+Folder="${1:-$PWD}"  # ":-" is used as a default value operator 
 # 2. a number of lines N (default: 0)
 Lines="${2:-0}"  
 
@@ -23,7 +23,7 @@ echo "Number of fasta/fa files is: $(echo "$F" | wc -l)"
 # Count the number of unique fasta IDs 
 echo "Number of unique fasta IDs: $(grep -o "^>" $F | sort -u | wc -l)" 
 # grep -o only prints matching lines and we use "^>" to match a greater-than symbol (>) only if it appears at the beginning of a line (^).
-# sort -u is used to remove duplicate lines, as we want to count the number of UNIQUE fasta IDs.
+# sort -u is used to remove duplicate lines, as we want to count the number of UNIQUE fasta IDs (equivalent to sort + unique).
 
 echo " "
 echo Report of the files:
@@ -37,10 +37,15 @@ for i in $F; do
 echo "Processing file: $i" 
 
 # Determine if the file is nucleotide or amino acids based on content 
-if grep -q "NP" "$i"
-then echo "Type: Protein fasta" 
-else echo "Type: Nucleotide fasta"
+if grep -Eq '^[ACGTN]+$' "$i"
+then echo "Type: Nucleotide fasta" 
+else echo "Type: Protein fasta"
  fi 
+ 
+# To determine if the file is a nucleotide or amino acid fasta, we are going to suppose that the amino acid sequences are not only composed of A,T,C or G. 
+# The grep -Eq '^[ACGTN]+$' "$i" command searches for patterns in a file, utilizing extended regular expressions (-E) and suppressing output (-q)
+# and the enclosed pattern '^[ACGTN]+$' anchors to the beginning and end of the line, specifying a character class matching A, C, G, T, or N (when nucleotide is not specified), and the
+# + quantifier for "one or more" occurrences.
 
 # Number of sequences 
 echo "Number of sequences: $(grep -c ">" "$i")" 
@@ -71,13 +76,13 @@ elif [[ "$(wc -l < "$i")" -eq 0 ]];
 else head -n "$Lines" "$i"
  echo "..." 
 tail -n "$Lines" "$i" 
+fi
 echo " "
 echo " "
 echo Report of $i finished.
 echo " "
 echo "........................................................................."
 echo " "
-fi 
 done
 echo " "
 echo Report of all fasta files in $1 finished!
