@@ -37,7 +37,7 @@ for i in $F; do
 echo "Processing file: $i" 
 
 # Determine if the file is nucleotide or amino acids based on content 
-if grep -Eq '^[ACGTN]+$' "$i"
+if grep -Eq '^[ACGTN]+$' "$i" 
 then echo "Type: Nucleotide fasta" 
 else echo "Type: Protein fasta"
  fi 
@@ -68,6 +68,8 @@ fi
 echo " "
 
 # Display file content
+if [[ $Lines -gt 0 ]]
+then
 echo "File content:"
  if [[ "$(wc -l < "$i")" -le $((2 * $Lines)) ]];
  then cat "$i" 
@@ -76,6 +78,7 @@ elif [[ "$(wc -l < "$i")" -eq 0 ]];
 else head -n "$Lines" "$i"
  echo "..." 
 tail -n "$Lines" "$i" 
+fi
 fi
 echo " "
 echo " "
