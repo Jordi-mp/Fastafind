@@ -46,7 +46,7 @@ else echo "Type: Nucleotide fasta"
 echo "Number of sequences: $(grep -c ">" "$i")" 
 
 # Total sequence length (excluding gaps, spaces, newline characters) 
-echo "Sequence length: $(sed -n '/>/! { s/-//g; s/[:space:]//g; s/\n///g; p; }' "$i" | wc -m)"  
+echo "Sequence length: $(sed -n '/>/! { s/-//g; s/[[:space:]]//g; s/\n//g; p; }' "$i" | wc -m)"
 
 # We can breakdown this command, as it might be the most difficult and it includes some functions whcih have not been explicitly explained in class:
 # - (sed -n '/>/!): sed -n supresses automatic printing. When combined with '/>/!, the neagtion indicates not to print the headers of the sequences (starting with >).
