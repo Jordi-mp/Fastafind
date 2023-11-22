@@ -22,7 +22,7 @@ echo "Number of fasta/fa files is: $(echo "$F" | wc -l)"
 
 # Count the number of unique fasta IDs 
 echo "Number of unique fasta IDs: $(grep "^>" $F | sort -u | wc -l)" 
-# grep -o only prints matching lines and we use "^>" to match a greater-than symbol (>) only if it appears at the beginning of a line (^).
+# grep prints matching lines and we use "^>" to match a greater-than symbol (>) only if it appears at the beginning of a line (^).
 # sort -u is used to remove duplicate lines, as we want to count the number of UNIQUE fasta IDs (equivalent to sort + unique).
 
 echo " "
